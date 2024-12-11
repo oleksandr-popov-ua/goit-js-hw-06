@@ -1,10 +1,38 @@
-function getElementWidth(content, padding, border) {
-  return (
-    Number.parseFloat(content) +
-    (Number.parseFloat(padding) + Number.parseFloat(border)) * 2
-  );
+class StringBuilder {
+  #value;
+  constructor(initialValue) {
+    this.#value = initialValue;
+  }
+
+  getValue() {
+    return this.#value;
+  }
+  padStart(str) {
+    return (this.#value = str + this.#value);
+  }
+  padEnd(str) {
+    return (this.#value += str);
+  }
+
+  padBoth(str) {
+    const newStr = str.concat(this.#value);
+    this.#value = newStr.concat(str);
+  }
+
+  /* 
+  Ще одна більш ізящна версія, але придумав не сам,- а ChatGPT :)
+  
+  padBoth(str) {
+    this.padStart(str);
+    this.padEnd(str);
+  } */
 }
 
-console.log(getElementWidth('50px', '8px', '4px')); // 74
-console.log(getElementWidth('60px', '12px', '8.5px')); // 101
-console.log(getElementWidth('200px', '0px', '0px')); // 200
+const builder = new StringBuilder('.');
+console.log(builder.getValue()); // "."
+builder.padStart('^');
+console.log(builder.getValue()); // "^."
+builder.padEnd('^');
+console.log(builder.getValue()); // "^.^"
+builder.padBoth('=');
+console.log(builder.getValue()); // "=^.^="
